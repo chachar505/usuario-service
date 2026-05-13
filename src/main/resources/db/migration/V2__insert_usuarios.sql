@@ -6,7 +6,7 @@ INSERT INTO usuario (
     password,
     billetera,
     cuenta_bloqueada,
-    fecha_registro
+    anio_registro
 ) VALUES
       (
           'Juan Perez',
