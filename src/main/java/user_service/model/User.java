@@ -51,7 +51,7 @@ public class User {
     @Column(name = "cuenta_bloqueada")
     private boolean cuentaBloqueada = false;
 
-    @Column(name = "fecha_registro")
+    @Column(name = "anio_registro")
     private Long anioRegistro;
 
 

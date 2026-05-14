@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                          nombre_apellido VARCHAR(100) NOT NULL,
