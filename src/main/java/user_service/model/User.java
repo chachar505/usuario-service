@@ -54,16 +54,4 @@ public class User {
     @Column(name = "anio_registro")
     private Long anioRegistro;
 
-
-
-
-
-
-
-
-
-
-
-
-
 }
