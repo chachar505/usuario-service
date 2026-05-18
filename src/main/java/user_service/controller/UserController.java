@@ -2,10 +2,12 @@ package user_service.controller;
 
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import user_service.dto.LoginRequest;
 import user_service.model.User;
 import user_service.service.UserService;
 
@@ -13,9 +15,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    @PostMapping("/login")
+
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        return userService.autenticar(loginRequest)
+                .map(user -> ResponseEntity.ok("¡Login exitoso! Bienvenido " + user.getNombrePantalla()))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email o contraseña incorrectos"));
+    }
 
     @PostMapping("/registro")
     public ResponseEntity<User> registrar(@Valid @RequestBody User usuario) {
