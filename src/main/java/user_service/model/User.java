@@ -49,7 +49,7 @@ public class User {
     private BigDecimal billetera = BigDecimal.ZERO;
 
     @Column(name = "cuenta_bloqueada")
-    private boolean cuentaBloqueada = false;
+    private Boolean cuentaBloqueada = false;
 
     @Column(name = "anio_registro")
     private Long anioRegistro;

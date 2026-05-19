@@ -69,7 +69,7 @@ public class UserController {
                 .nombrePantalla(user.getNombrePantalla())
                 .email(user.getEmail())
                 .billetera(user.getBilletera())
-                .cuentaBloqueada(user.isCuentaBloqueada())
+                .cuentaBloqueada(user.getCuentaBloqueada())
                 .anioRegistro(user.getAnioRegistro())
                 .build();
     }
