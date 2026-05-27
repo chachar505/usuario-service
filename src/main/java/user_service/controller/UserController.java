@@ -1,13 +1,12 @@
 package user_service.controller;
 
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import user_service.dto.LoginRequest;
+import user_service.dto.UserResponseDTO;
+import user_service.exception.ResourceNotFoundException;
 import user_service.model.User;
 import user_service.service.UserService;
 
@@ -21,51 +20,57 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.autenticar(loginRequest)
-                .map(user -> ResponseEntity.ok("¡Login exitoso! Bienvenido " + user.getNombrePantalla()))
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email o contraseña incorrectos"));
+                .map(user -> ResponseEntity.ok("Login exitoso. Bienvenido " + user.getNombrePantalla()))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email o contrasena incorrectos"));
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<User> registrar(@Valid @RequestBody User usuario) {
+    public ResponseEntity<UserResponseDTO> registrar(@Valid @RequestBody User usuario) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.registrarUsuario(usuario));
+                .body(mapToResponse(userService.registrarUsuario(usuario)));
     }
 
-    @GetMapping("/lista")
-    public List<User> listar() {
-        return userService.obtenerTodos();
+    @GetMapping
+    public ResponseEntity<List<UserResponseDTO>> listar() {
+        return ResponseEntity.ok(
+                userService.obtenerTodos().stream()
+                        .map(this::mapToResponse)
+                        .toList()
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> obtenerPorId(@PathVariable Long id) {
         return userService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(user -> ResponseEntity.ok(mapToResponse(user)))
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> actualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody User detallesUsuario) {
+        return ResponseEntity.ok(mapToResponse(userService.actualizarUsuario(id, detallesUsuario)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (userService.obtenerPorId(id).isPresent()) {
-            userService.eliminarUsuario(id);
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> actualizar(@PathVariable Long id, @Valid @RequestBody User detallesUsuario) {
-        try {
-            User usuarioActualizado = userService.actualizarUsuario(id, detallesUsuario);
-            return ResponseEntity.ok(usuarioActualizado);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        userService.eliminarUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 
 
-
+    private UserResponseDTO mapToResponse(User user) {
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .nombreApellido(user.getNombreApellido())
+                .nombrePantalla(user.getNombrePantalla())
+                .email(user.getEmail())
+                .billetera(user.getBilletera())
+                .cuentaBloqueada(user.getCuentaBloqueada())
+                .anioRegistro(user.getAnioRegistro())
+                .build();
+    }
 }

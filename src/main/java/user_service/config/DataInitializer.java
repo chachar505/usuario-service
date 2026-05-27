@@ -21,13 +21,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Verificamos si la tabla ya tiene datos para no duplicar
         if (userRepository.count() > 0) {
             log.info(">>> Usuarios ya cargados. Se omite la inicialización.");
             return;
         }
 
-        // Crear usuario 1
+
         User user1 = new User();
         user1.setNombreApellido("Juan Perez");
         user1.setNombrePantalla("JuanitoGamer");
@@ -38,7 +37,7 @@ public class DataInitializer implements CommandLineRunner {
         user1.setAnioRegistro(2024L);
 
 
-        // Crear usuario 2
+
         User user2 = new User();
         user2.setNombreApellido("Maria Garcia");
         user2.setNombrePantalla("MariaPro");
@@ -48,7 +47,7 @@ public class DataInitializer implements CommandLineRunner {
         user2.setCuentaBloqueada(false);
         user2.setAnioRegistro(2023L);
 
-        // Crear usuario 3
+
         User user3 = new User();
         user3.setNombreApellido("Satoshi Nakamoto");
         user3.setNombrePantalla("CryptoKing");
@@ -58,7 +57,7 @@ public class DataInitializer implements CommandLineRunner {
         user3.setCuentaBloqueada(false);
         user3.setAnioRegistro(2021L);
 
-        // Guardar todos en la base de datos
+
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
