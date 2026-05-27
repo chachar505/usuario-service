@@ -22,8 +22,6 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Permitir todos los endpoints de la API
-                        // para que los otros microservicios puedan consumirlos via Feign
                         .anyRequest().permitAll()
                 );
 

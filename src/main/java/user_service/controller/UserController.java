@@ -61,7 +61,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    // Convierte User (entidad) a UserResponseDTO (sin exponer password)
+
     private UserResponseDTO mapToResponse(User user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
