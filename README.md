@@ -1,0 +1,1 @@
+Gestión de cuentas de usuario. Permite registrar nuevos usuarios, autenticar sesiones (login), listar, actualizar y eliminar cuentas. Cada usuario cuenta con nombre de pantalla, email, billetera y estado de bloqueo.
