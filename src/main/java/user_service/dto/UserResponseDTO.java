@@ -13,6 +13,6 @@ public class UserResponseDTO {
     private String nombrePantalla;
     private String email;
     private BigDecimal billetera;
-    private boolean cuentaBloqueada;
+    private Boolean cuentaBloqueada;
     private Long anioRegistro;
 }

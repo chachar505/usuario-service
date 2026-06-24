@@ -35,7 +35,7 @@ public class UserControllerV2 {
 
     @PostMapping("/login")
     @Operation(summary = "Iniciar sesión", description = "Se le pide al usuario su gmail y contraseña para entrar")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.autenticar(loginRequest)
                 .map(user -> ResponseEntity.ok("Login exitoso. Bienvenido " + user.getNombrePantalla()))
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email o contrasena incorrectos"));

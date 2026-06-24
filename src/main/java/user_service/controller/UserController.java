@@ -40,7 +40,7 @@ public class UserController {
                     content = @Content(mediaType = "text/plain",
                             schema = @Schema(example = "Email o contrasena incorrectos")))
     })
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.autenticar(loginRequest)
                 .map(user -> ResponseEntity.ok("Login exitoso. Bienvenido " + user.getNombrePantalla()))
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email o contrasena incorrectos"));
